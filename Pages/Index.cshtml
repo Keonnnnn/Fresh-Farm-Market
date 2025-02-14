@@ -1,0 +1,70 @@
+﻿@page
+@model FreshFarmMarket.Pages.IndexModel
+@{
+    Layout = "_Layout"; // Ensure the page uses the shared layout
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to FreshFarmMarket</h1>
+    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+    @if (Model.CurrentUser != null)
+    {
+            <div class="profile-container">
+                <h3>Your Profile Information:</h3>
+
+                <!-- ✅ Display Profile Photo -->
+                <div>
+                    <img src="@Model.CurrentUser.ProfilePhotoPath" alt="Profile Photo" class="profile-photo img-thumbnail" />
+                </div>
+
+                <p><strong>Full Name:</strong> @Model.CurrentUser.FullName</p>
+                <p><strong>Gender:</strong> @Model.CurrentUser.Gender</p>
+                <p><strong>Mobile Number:</strong> @Model.CurrentUser.MobileNo</p>
+                <p><strong>Delivery Address:</strong> @Model.CurrentUser.DeliveryAddress</p>
+
+                <!-- ✅ Decrypt and show the last four digits of the credit card number -->
+                <p><strong>Credit Card Number:</strong> @GetMaskedCreditCard(Model.DecryptedCreditCardNo)</p>
+            </div>
+    }
+    else
+    {
+            <p>Please log in to view your profile information.</p>
+    }
+</div>
+
+@section Styles {
+        <style>
+            .profile-container {
+                max-width: 400px;
+                margin: auto;
+                padding: 20px;
+                border-radius: 10px;
+                background-color: #f9f9f9;
+                box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .profile-photo {
+                width: 150px;
+                height: 150px;
+                object-fit: cover;
+                border-radius: 50%;
+                margin-bottom: 15px;
+            }
+        </style>
+}
+
+@functions {
+    // Helper function to mask the credit card number
+    public string GetMaskedCreditCard(string decryptedCreditCardNo)
+    {
+        if (string.IsNullOrEmpty(decryptedCreditCardNo))
+        {
+            return "No credit card data available.";
+        }
+
+        // Return the last 4 digits and mask the rest with asterisks
+        return "**** **** **** " + decryptedCreditCardNo.Substring(decryptedCreditCardNo.Length - 4);
+    }
+}

@@ -1,0 +1,139 @@
+﻿@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - FreshFarmMarket</title>
+
+    <!-- ✅ Bootstrap and Custom Styles -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/FreshFarmMarket.styles.css" asp-append-version="true" />
+
+    <!-- ✅ Render Additional Page-Specific Styles -->
+    @RenderSection("Styles", required: false)
+
+    <!-- ✅ Google reCAPTCHA v3 Script -->
+    <script src="https://www.google.com/recaptcha/api.js?render=@Configuration["GoogleReCaptcha:SiteKey"]" defer></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            console.log("✅ Page Loaded. Preparing reCAPTCHA...");
+
+            // ✅ Auto logout on session timeout (every 1 min)
+            setInterval(function () {
+                fetch('/SessionCheck')
+                    .then(response => {
+                        if (!response.ok) {
+                            console.warn("⚠️ Session expired. Redirecting to login...");
+                            window.location.href = '/Login';
+                        }
+                    })
+                    .catch(() => {
+                        console.error("❌ Session check failed. Redirecting to login...");
+                        window.location.href = '/Login';
+                    });
+            }, 60000); // Check every 60 seconds
+        });
+
+        // ✅ Secure reCAPTCHA Execution for Multiple Forms
+        function executeRecaptcha(event, formId) {
+            event.preventDefault(); // Prevent form submission until reCAPTCHA verification
+            console.log("🔵 Executing reCAPTCHA for form:", formId);
+
+            grecaptcha.ready(function () {
+                grecaptcha.execute('@Configuration["GoogleReCaptcha:SiteKey"]', { action: 'submit' })
+                    .then(function (token) {
+                        console.log("✅ Received reCAPTCHA token:", token);
+                        var recaptchaInput = document.querySelector(#${formId} input[name="RecaptchaToken"]);
+                        if (recaptchaInput) {
+                            recaptchaInput.value = token;
+                            document.getElementById(formId).submit(); // Submit the form
+                        } else {
+                            console.error("❌ Error: No hidden reCAPTCHA input found in form:", formId);
+                        }
+                    })
+                    .catch(function (error) {
+                        console.error("❌ reCAPTCHA execution failed:", error);
+                    });
+            });
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom shadow-sm mb-3">
+            <div class="container">
+                <a class="navbar-brand fw-bold text-primary" asp-page="/Index">FreshFarmMarket</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-page="/Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-page="/Privacy">Privacy</a>
+                        </li>
+
+                        @if (User.Identity?.IsAuthenticated ?? false)
+                        {
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-page="/ChangePassword">Change Password</a>
+                                    </li>
+                        }
+                    </ul>
+
+                    <ul class="navbar-nav">
+                        @if (User.Identity?.IsAuthenticated ?? false)
+                        {
+                                    <li class="nav-item d-flex align-items-center">
+                                        <span class="nav-link fw-bold text-primary">Hello, @User.Identity.Name!</span>
+                                    </li>
+                                    <li class="nav-item">
+                                        <!-- ✅ Logout Form with reCAPTCHA -->
+                                        <form method="post" asp-page="/Logout" id="logoutForm" onsubmit="executeRecaptcha(event, 'logoutForm')">
+                                            <input type="hidden" name="RecaptchaToken" />
+                                            <button type="submit" class="btn btn-link nav-link text-danger">Logout</button>
+                                        </form>
+                                    </li>
+                        }
+                        else
+                        {
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-page="/Login">Login</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-page="/Register">Register</a>
+                                    </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()  <!-- ✅ Page content will be rendered here -->
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted bg-light mt-5">
+        <div class="container text-center py-3">
+            &copy; 2025 - FreshFarmMarket - <a asp-page="/Privacy">Privacy</a>
+        </div>
+    </footer>
+
+    <!-- ✅ JavaScript files -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

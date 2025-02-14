@@ -1,0 +1,49 @@
+﻿@page
+@model FreshFarmMarket.Pages.ErrorModel
+@{
+    ViewData["Title"] = "Error";
+    Layout = "_Layout";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg">
+                <div class="card-header bg-danger text-white">
+                    <h2 class="text-center">Oops! Something went wrong.</h2>
+                </div>
+                <div class="card-body text-center">
+                    @if (Model.StatusCode == 404)
+                    {
+                            <h4 class="text-warning">Page Not Found (404)</h4>
+                            <p>The page you are looking for might have been removed or is temporarily unavailable.</p>
+                    }
+                    else if (Model.StatusCode == 403)
+                    {
+                            <h4 class="text-warning">Access Denied (403)</h4>
+                            <p>You do not have permission to access this page.</p>
+                    }
+                    else if (Model.StatusCode == 500)
+                    {
+                            <h4 class="text-warning">Internal Server Error (500)</h4>
+                            <p>Something went wrong on our end. Please try again later.</p>
+                    }
+                    else
+                    {
+                            <h4 class="text-warning">An unexpected error occurred.</h4>
+                            <p>We are working to resolve this issue. Please try again later.</p>
+                    }
+
+                    @if (Model.ShowRequestId)
+                    {
+                            <p>
+                                <strong>Request ID:</strong> <code>@Model.RequestId</code>
+                            </p>
+                    }
+
+                    <a asp-page="/Index" class="btn btn-primary mt-3">Return to Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
