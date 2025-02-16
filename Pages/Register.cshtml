@@ -13,31 +13,31 @@
             <div class="card shadow-lg">
                 <div class="card-body">
                     <form method="post" enctype="multipart/form-data" id="register-form">
-                        <!-- ✅ Show Validation Errors -->
+                        <!--  Show Validation Errors -->
                         <div asp-validation-summary="All" class="alert alert-danger"></div>
 
-                        <!-- ✅ Full Name -->
+                        <!--  Full Name -->
                         <div class="form-group mb-3">
                             <label asp-for="FullName" class="form-label"></label>
                             <input asp-for="FullName" class="form-control" required />
                             <span asp-validation-for="FullName" class="text-danger"></span>
                         </div>
 
-                        <!-- ✅ Email -->
+                        <!--  Email -->
                         <div class="form-group mb-3">
                             <label asp-for="Email" class="form-label"></label>
                             <input asp-for="Email" class="form-control" type="email" required />
                             <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
 
-                        <!-- ✅ Credit Card Number -->
+                        <!--  Credit Card Number -->
                         <div class="form-group mb-3">
                             <label asp-for="CreditCardNo" class="form-label"></label>
                             <input asp-for="CreditCardNo" class="form-control" type="password" required />
                             <span asp-validation-for="CreditCardNo" class="text-danger"></span>
                         </div>
 
-                        <!-- ✅ Gender -->
+                        <!--  Gender -->
                         <div class="form-group mb-3">
                             <label asp-for="Gender" class="form-label"></label>
                             <select asp-for="Gender" class="form-control" required>
@@ -49,21 +49,21 @@
                             <span asp-validation-for="Gender" class="text-danger"></span>
                         </div>
 
-                        <!-- ✅ Mobile Number -->
+                        <!--  Mobile Number -->
                         <div class="form-group mb-3">
                             <label asp-for="MobileNo" class="form-label"></label>
                             <input asp-for="MobileNo" class="form-control" type="tel" required />
                             <span asp-validation-for="MobileNo" class="text-danger"></span>
                         </div>
 
-                        <!-- ✅ Delivery Address -->
+                        <!--  Delivery Address -->
                         <div class="form-group mb-3">
                             <label asp-for="DeliveryAddress" class="form-label"></label>
                             <input asp-for="DeliveryAddress" class="form-control" required />
                             <span asp-validation-for="DeliveryAddress" class="text-danger"></span>
                         </div>
 
-                        <!-- ✅ Password -->
+                        <!--  Password -->
                         <div class="form-group mb-3">
                             <label asp-for="Password" class="form-label"></label>
                             <input asp-for="Password" type="password" id="password" class="form-control" required onkeyup="checkPasswordStrength()" />
@@ -72,33 +72,33 @@
                             <div id="password-strength-bar" style="width: 0%; height: 10px; background-color: #e0e0e0;"></div>
                         </div>
 
-                        <!-- ✅ Confirm Password -->
+                        <!--  Confirm Password -->
                         <div class="form-group mb-3">
                             <label asp-for="ConfirmPassword" class="form-label"></label>
                             <input asp-for="ConfirmPassword" type="password" class="form-control" required />
                             <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                         </div>
 
-                        <!-- ✅ About Me -->
+                        <!--  About Me -->
                         <div class="form-group mb-3">
                             <label asp-for="AboutMe" class="form-label"></label>
                             <textarea asp-for="AboutMe" class="form-control" required></textarea>
                             <span asp-validation-for="AboutMe" class="text-danger"></span>
                         </div>
 
-                        <!-- ✅ Profile Photo Upload -->
+                        <!--  Profile Photo Upload -->
                         <div class="form-group mb-3">
                             <label asp-for="Photo" class="form-label"></label>
                             <input asp-for="Photo" type="file" class="form-control" accept=".jpg,.jpeg,.png" required onchange="previewImage(event)" />
                             <span asp-validation-for="Photo" class="text-danger"></span>
 
-                            <!-- ✅ Image Preview -->
+                            <!--  Image Preview -->
                             <div class="mt-2">
                                 <img id="profile-photo-preview" src="/uploads/default-profile.png" alt="Profile Preview" class="img-thumbnail" style="max-width: 150px; display: none;" />
                             </div>
                         </div>
 
-                        <!-- ✅ Submit Button -->
+                        <!--  Submit Button -->
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-primary" id="register-btn">Register</button>
                         </div>

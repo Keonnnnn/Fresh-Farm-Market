@@ -1,0 +1,65 @@
+﻿@page
+@model FreshFarmMarket.Pages.LoginWith2faModel
+@{
+    ViewData["Title"] = "Two-Factor Authentication";
+}
+
+<h2 class="text-center">@ViewData["Title"]</h2>
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg">
+                <div class="card-body">
+                    <form method="post">
+                        <!-- Validation summary to show error messages -->
+                        <div asp-validation-summary="All" class="alert alert-danger"></div>
+
+                        <!-- Hidden inputs to pass Token and Email for validation -->
+                        <input type="hidden" asp-for="Token" />
+                        <input type="hidden" asp-for="Email" />
+
+                        <!--  Input Field for 2FA Code -->
+                        <div class="form-group mb-3">
+                            <label asp-for="Input.TwoFactorCode" class="form-label">Enter 2FA Code:</label>
+                            <input asp-for="Input.TwoFactorCode" class="form-control text-center" type="text" maxlength="6" pattern="\d{6}" required placeholder="123456" />
+                            <span asp-validation-for="Input.TwoFactorCode" class="text-danger"></span>
+                        </div>
+
+                        <!--  Action Buttons -->
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Verify</button>
+                        </div>
+                    </form>
+
+                    <!--  Resend Code Button -->
+                    <form method="post" asp-page-handler="Resend" class="mt-3">
+                        <button type="submit" class="btn btn-link text-decoration-none">Didn't receive a code? Resend</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="text-center mt-3">
+                <p>Back to <a asp-page="/Login">Login</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+        <style>
+            .card {
+                border-radius: 10px;
+                padding: 20px;
+                background: #fff;
+                box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+            }
+            .btn-link {
+                color: #007bff;
+                font-size: 14px;
+            }
+            .btn-link:hover {
+                text-decoration: underline;
+            }
+        </style>
+}

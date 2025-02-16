@@ -6,22 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - FreshFarmMarket</title>
 
-    <!-- ✅ Bootstrap and Custom Styles -->
+    <!--  Bootstrap and Custom Styles -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/FreshFarmMarket.styles.css" asp-append-version="true" />
 
-    <!-- ✅ Render Additional Page-Specific Styles -->
+    <!--  Render Additional Page-Specific Styles -->
     @RenderSection("Styles", required: false)
 
-    <!-- ✅ Google reCAPTCHA v3 Script -->
+    <!--  Google reCAPTCHA v3 Script -->
     <script src="https://www.google.com/recaptcha/api.js?render=@Configuration["GoogleReCaptcha:SiteKey"]" defer></script>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             console.log("✅ Page Loaded. Preparing reCAPTCHA...");
 
-            // ✅ Auto logout on session timeout (every 1 min)
+            //  Auto logout on session timeout (every 1 min)
             setInterval(function () {
                 fetch('/SessionCheck')
                     .then(response => {
@@ -37,7 +37,7 @@
             }, 60000); // Check every 60 seconds
         });
 
-        // ✅ Secure reCAPTCHA Execution for Multiple Forms
+        //  Secure reCAPTCHA Execution for Multiple Forms
         function executeRecaptcha(event, formId) {
             event.preventDefault(); // Prevent form submission until reCAPTCHA verification
             console.log("🔵 Executing reCAPTCHA for form:", formId);
@@ -95,7 +95,7 @@
                                         <span class="nav-link fw-bold text-primary">Hello, @User.Identity.Name!</span>
                                     </li>
                                     <li class="nav-item">
-                                        <!-- ✅ Logout Form with reCAPTCHA -->
+                                        <!--  Logout Form with reCAPTCHA -->
                                         <form method="post" asp-page="/Logout" id="logoutForm" onsubmit="executeRecaptcha(event, 'logoutForm')">
                                             <input type="hidden" name="RecaptchaToken" />
                                             <button type="submit" class="btn btn-link nav-link text-danger">Logout</button>
@@ -119,7 +119,7 @@
 
     <div class="container">
         <main role="main" class="pb-3">
-            @RenderBody()  <!-- ✅ Page content will be rendered here -->
+            @RenderBody()  <!--  Page content will be rendered here -->
         </main>
     </div>
 
@@ -129,7 +129,7 @@
         </div>
     </footer>
 
-    <!-- ✅ JavaScript files -->
+    <!--  JavaScript files -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

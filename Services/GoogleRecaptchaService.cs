@@ -52,7 +52,7 @@ namespace FreshFarmMarket.Services
                 if (result?.Success == true)
                 {
                     _logger.LogInformation("reCAPTCHA validation succeeded with score: {Score}", result.Score);
-                    return result.Score; // ✅ Return the score instead of just true/false
+                    return result.Score; //  Return the score instead of just true/false
                 }
                 else
                 {
@@ -70,7 +70,7 @@ namespace FreshFarmMarket.Services
         private class RecaptchaResponse
         {
             public bool Success { get; set; }
-            public double Score { get; set; } // ✅ Capture the reCAPTCHA score
+            public double Score { get; set; } //  Capture the reCAPTCHA score
             public string ChallengeTs { get; set; }
             public string Hostname { get; set; }
             public string[] ErrorCodes { get; set; }

@@ -13,7 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System;
 using System.Collections.Generic;
-using System.Text.Encodings.Web; // ✅ Import HtmlEncoder for sanitization
+using System.Text.Encodings.Web; //  Import HtmlEncoder for sanitization
 
 namespace FreshFarmMarket.Pages
 {
@@ -101,12 +101,12 @@ namespace FreshFarmMarket.Pages
                 return Page();
             }
 
-            // ✅ Sanitize inputs to prevent XSS
+            //  Sanitize inputs to prevent XSS
             FullName = HtmlEncoder.Default.Encode(FullName);
             AboutMe = HtmlEncoder.Default.Encode(AboutMe);
             DeliveryAddress = HtmlEncoder.Default.Encode(DeliveryAddress);
 
-            // ✅ Check if email already exists
+            //  Check if email already exists
             var existingUser = await _userManager.FindByEmailAsync(Email);
             if (existingUser != null)
             {
@@ -115,7 +115,7 @@ namespace FreshFarmMarket.Pages
                 return Page();
             }
 
-            // ✅ Handle file upload securely
+            //  Handle file upload securely
             string photoPath = null;
             if (Photo != null && Photo.Length > 0)
             {
@@ -142,10 +142,10 @@ namespace FreshFarmMarket.Pages
                 }
             }
 
-            // ✅ Encrypt the Credit Card Number
+            //  Encrypt the Credit Card Number
             var encryptedCreditCardNo = EncryptCreditCardNumber(CreditCardNo);
 
-            // ✅ Create user and set security properties
+            //  Create user and set security properties
             var user = new ApplicationUser
             {
                 UserName = Email,
@@ -157,8 +157,8 @@ namespace FreshFarmMarket.Pages
                 MobileNo = MobileNo,
                 DeliveryAddress = DeliveryAddress,
                 CreditCardNo = encryptedCreditCardNo,
-                LastPasswordChange = DateTime.UtcNow, // ✅ Initialize password change timestamp
-                PasswordHistory = new List<string>() // ✅ Initialize empty password history
+                LastPasswordChange = DateTime.UtcNow, //  Initialize password change timestamp
+                PasswordHistory = new List<string>() //  Initialize empty password history
             };
 
             var result = await _userManager.CreateAsync(user, Password);
@@ -166,7 +166,7 @@ namespace FreshFarmMarket.Pages
             {
                 _logger.LogInformation("User created successfully.");
 
-                // ✅ Store first password in history
+                //  Store first password in history
                 var passwordHasher = new PasswordHasher<ApplicationUser>();
                 user.PasswordHistory.Add(passwordHasher.HashPassword(user, Password));
 

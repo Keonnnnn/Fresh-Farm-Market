@@ -9,22 +9,22 @@ using Microsoft.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ✅ Register Google reCAPTCHA Service
+//  Register Google reCAPTCHA Service
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<GoogleRecaptchaService>();
 
-// ✅ Register EmailService
+//  Register EmailService
 builder.Services.AddScoped<IEmailService, EmailService>(); // Registering the EmailService for Dependency Injection
 
-// ✅ Add Razor Pages
+//  Add Razor Pages
 builder.Services.AddRazorPages();
 
-// ✅ Configure Database Context
+//  Configure Database Context
 builder.Services.AddDbContext<AuthDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AuthConnectionString"))
 );
 
-// ✅ Configure Identity
+//  Configure Identity
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
     // Password settings (Security Enhanced)
@@ -47,7 +47,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 .AddEntityFrameworkStores<AuthDbContext>()
 .AddDefaultTokenProviders();
 
-// ✅ Configure Authentication Cookie (Hardened)
+//  Configure Authentication Cookie (Hardened)
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.Cookie.HttpOnly = true;
@@ -59,7 +59,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.SlidingExpiration = true;
 });
 
-// ✅ Configure Session (Security Hardened)
+//  Configure Session (Security Hardened)
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(30);
@@ -69,7 +69,7 @@ builder.Services.AddSession(options =>
     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
 });
 
-// ✅ Add HSTS & HTTPS for Production
+//  Add HSTS & HTTPS for Production
 if (!builder.Environment.IsDevelopment())
 {
     builder.Services.AddHsts(options =>
@@ -80,7 +80,7 @@ if (!builder.Environment.IsDevelopment())
     });
 }
 
-// ✅ Configure Anti-Forgery Tokens
+//  Configure Anti-Forgery Tokens
 builder.Services.AddAntiforgery(options =>
 {
     options.Cookie.HttpOnly = true;
@@ -88,16 +88,16 @@ builder.Services.AddAntiforgery(options =>
     options.Cookie.SameSite = SameSiteMode.Strict;
 });
 
-// ✅ Configure Forwarded Headers for Reverse Proxy Support
+//  Configure Forwarded Headers for Reverse Proxy Support
 builder.Services.Configure<ForwardedHeadersOptions>(options =>
 {
     options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
 });
 
-// ✅ Build the App
+//  Build the App
 var app = builder.Build();
 
-// ✅ Configure Error Handling
+//  Configure Error Handling
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
@@ -120,7 +120,7 @@ app.UseAuthorization();
 
 app.MapRazorPages();
 
-// ✅ Auto-Migrate Database & Create Admin User if Not Exists
+//  Auto-Migrate Database & Create Admin User if Not Exists
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -132,14 +132,14 @@ using (var scope = app.Services.CreateScope())
 
         context.Database.Migrate(); // Apply any pending migrations
 
-        // ✅ Ensure Default Admin Role Exists
+        //  Ensure Default Admin Role Exists
         var adminRole = "Admin";
         if (!await roleManager.RoleExistsAsync(adminRole))
         {
             await roleManager.CreateAsync(new IdentityRole(adminRole));
         }
 
-        // ✅ Ensure Default Admin User Exists
+        //  Ensure Default Admin User Exists
         var adminEmail = "admin@freshfarmmarket.com";
         var adminUser = await userManager.FindByEmailAsync(adminEmail);
         if (adminUser == null)
@@ -168,5 +168,6 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-// ✅ Run the Application
+
+app.UseStatusCodePagesWithReExecute("/Error", "?statusCode={0}");
 app.Run();

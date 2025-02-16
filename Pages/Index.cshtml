@@ -14,7 +14,7 @@
             <div class="profile-container">
                 <h3>Your Profile Information:</h3>
 
-                <!-- ✅ Display Profile Photo -->
+                <!--  Display Profile Photo -->
                 <div>
                     <img src="@Model.CurrentUser.ProfilePhotoPath" alt="Profile Photo" class="profile-photo img-thumbnail" />
                 </div>
@@ -24,7 +24,7 @@
                 <p><strong>Mobile Number:</strong> @Model.CurrentUser.MobileNo</p>
                 <p><strong>Delivery Address:</strong> @Model.CurrentUser.DeliveryAddress</p>
 
-                <!-- ✅ Decrypt and show the last four digits of the credit card number -->
+                <!--  Decrypt and show the last four digits of the credit card number -->
                 <p><strong>Credit Card Number:</strong> @GetMaskedCreditCard(Model.DecryptedCreditCardNo)</p>
             </div>
     }

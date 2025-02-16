@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authentication;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using System;
-using System.Text.Encodings.Web; // ✅ Import HtmlEncoder for sanitization
+using System.Text.Encodings.Web; //  Import HtmlEncoder for sanitization
 
 namespace FreshFarmMarket.Pages
 {
@@ -64,7 +64,7 @@ namespace FreshFarmMarket.Pages
                 ModelState.AddModelError(string.Empty, ErrorMessage);
             }
 
-            // ✅ Clear any external authentication cookies before login
+            //  Clear any external authentication cookies before login
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
             if (User.Identity?.IsAuthenticated ?? false)
@@ -84,10 +84,10 @@ namespace FreshFarmMarket.Pages
                 return Page();
             }
 
-            // ✅ Sanitize input to prevent XSS attacks
+            //  Sanitize input to prevent XSS attacks
             Email = HtmlEncoder.Default.Encode(Email);
 
-            // ✅ Verify Google reCAPTCHA Score (Anti-bot protection)
+            //  Verify Google reCAPTCHA Score (Anti-bot protection)
             double thresholdScore = 0.5;
             var recaptchaScore = await _recaptchaService.VerifyCaptchaAsync(RecaptchaToken);
 
@@ -98,7 +98,7 @@ namespace FreshFarmMarket.Pages
                 return Page();
             }
 
-            // ✅ Find user by email
+            //  Find user by email
             var user = await _userManager.FindByEmailAsync(Email);
             if (user == null)
             {
@@ -107,13 +107,13 @@ namespace FreshFarmMarket.Pages
                 return Page();
             }
 
-            // ✅ Check if the account is locked
+            //  Check if the account is locked
             if (await _userManager.IsLockedOutAsync(user))
             {
                 var lockoutEnd = await _userManager.GetLockoutEndDateAsync(user);
                 if (lockoutEnd.HasValue && lockoutEnd.Value < DateTimeOffset.UtcNow)
                 {
-                    // ✅ Auto Unlock after lockout period
+                    //  Auto Unlock after lockout period
                     await _userManager.SetLockoutEndDateAsync(user, null);
                     await _userManager.ResetAccessFailedCountAsync(user);
                     _logger.LogInformation("User {Email} lockout period expired. Account unlocked.", Email);
@@ -126,7 +126,7 @@ namespace FreshFarmMarket.Pages
                 }
             }
 
-            // ✅ Enforce Password Expiration Policy (e.g., 90 days)
+            //  Enforce Password Expiration Policy (e.g., 90 days)
             int maxPasswordAgeDays = 90;
             if (user.LastPasswordChange.HasValue && DateTime.UtcNow > user.LastPasswordChange.Value.AddDays(maxPasswordAgeDays))
             {
@@ -134,7 +134,7 @@ namespace FreshFarmMarket.Pages
                 return RedirectToPage("/ChangePassword", new { expired = true });
             }
 
-            // ✅ Attempt login
+            //  Attempt login
             var result = await _signInManager.PasswordSignInAsync(user.UserName, Password, RememberMe, lockoutOnFailure: true);
 
             if (result.Succeeded)

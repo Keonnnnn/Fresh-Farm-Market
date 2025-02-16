@@ -14,10 +14,10 @@
                 </div>
                 <div class="card-body">
                     <form method="post" id="loginForm">
-                        <!-- ✅ Show Validation Errors -->
+                        <!--  Show Validation Errors -->
                         <div asp-validation-summary="All" class="alert alert-danger"></div>
 
-                        <!-- ✅ Error Message for Login Failure -->
+                        <!--  Error Message for Login Failure -->
                         @if (!string.IsNullOrEmpty(Model.ErrorMessage))
                         {
                                     <div class="alert alert-danger">
@@ -25,21 +25,21 @@
                                     </div>
                         }
 
-                        <!-- ✅ Email Field -->
+                        <!--  Email Field -->
                         <div class="form-group mb-3">
                             <label for="Email" class="form-label">Email</label>
                             <input id="Email" asp-for="Email" class="form-control" type="email" required />
                             <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
 
-                        <!-- ✅ Password Field -->
+                        <!--  Password Field -->
                         <div class="form-group mb-3">
                             <label for="Password" class="form-label">Password</label>
                             <input id="Password" asp-for="Password" class="form-control" type="password" required />
                             <span asp-validation-for="Password" class="text-danger"></span>
                         </div>
 
-                        <!-- ✅ Remember Me Checkbox -->
+                        <!--  Remember Me Checkbox -->
                         <div class="form-group mb-3">
                             <div class="form-check">
                                 <input id="RememberMe" asp-for="RememberMe" class="form-check-input" type="checkbox" />
@@ -47,15 +47,15 @@
                             </div>
                         </div>
 
-                        <!-- ✅ Hidden reCAPTCHA Token Field -->
+                        <!--  Hidden reCAPTCHA Token Field -->
                         <input type="hidden" id="recaptchaToken" name="RecaptchaToken" />
 
-                        <!-- ✅ Submit Button -->
+                        <!--  Submit Button -->
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-primary" id="loginButton">Login</button>
                         </div>
 
-                        <!-- ✅ Registration Link -->
+                        <!--  Registration Link -->
                         <div class="text-center mt-3">
                             <p>
                                 Don't have an account? 
@@ -63,7 +63,7 @@
                             </p>
                         </div>
 
-                        <!-- ✅ Forgot Password Link -->
+                        <!--  Forgot Password Link -->
                         <div class="text-center">
                             <p>
                                 <a asp-page="/ForgotPassword">Forgot your password?</a>
@@ -88,7 +88,7 @@
 @section Scripts {
             <partial name="_ValidationScriptsPartial" />
 
-            <!-- ✅ Google reCAPTCHA v3 Handling -->
+            <!--  Google reCAPTCHA v3 Handling -->
             <script src="https://www.google.com/recaptcha/api.js?render='@Model.ReCaptchaSiteKey'"></script>
 
             <script>
@@ -97,10 +97,10 @@
 
                     grecaptcha.ready(function () {
                         grecaptcha.execute('@Model.ReCaptchaSiteKey', { action: 'login' }).then(function (token) {
-                            // ✅ Set reCAPTCHA Token in Hidden Input
+                            //  Set reCAPTCHA Token in Hidden Input
                             document.getElementById('recaptchaToken').value = token;
 
-                            // ✅ Submit the form after getting the token
+                            //  Submit the form after getting the token
                             document.getElementById('loginForm').submit();
                         });
                     });
